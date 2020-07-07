@@ -1,6 +1,6 @@
-# Vue Storefront Magento Password Reset Extension
+# Vue Storefront Password Reset Extension
 
-Magento password reset module for [vue-storefront](https://github.com/DivanteLtd/vue-storefront).
+Password reset module for [vue-storefront](https://github.com/DivanteLtd/vue-storefront).
 
 ## Installation
 
@@ -10,41 +10,29 @@ By hand (preferer):
 git clone git@github.com:AbsoluteWebServices/vsf-password-reset.git ./vue-storefront/src/modules/
 ```
 
-Registration the module. Go to `./vue-storefront/src/modules/index.ts`
-
-```js
-...
-import { extendModule } from '@vue-storefront/core/lib/module'
-import { UserExtend } from './vsf-password-reset'
-extendModule(UserExtend)
-```
-
 Add following settings to your config file.
 
 ```json
   "users": {
     ...
-    "createPassword_endpoint": "http://localhost:8080/api/ext/password-reset/create-password"
+    "createPassword_endpoint": "http://localhost:8080/api/user/create-password"
   },
 ```
 
-Add ResetPassword component as mixin
+Register module and add CreatePassword mixin
 
 ```
 ...
-import { ResetPassword } from 'src/modules/vsf-password-reset/components/ResetPassword'
+import { registerModule } from '@vue-storefront/core/lib/modules'
+import { PasswordResetModule } from 'src/modules/vsf-password-reset'
+import { CreatePassword } from 'src/modules/vsf-password-reset/mixins/CreatePassword'
 
 export default {
   ...
-  mixins: [ResetPassword],
+  mixins: [CreatePassword],
+  beforeCreate () {
+    registerModule(PasswordResetModule)
+  },
   ...
 }
-```
-
-## Reset Password API extension
-
-Install additional extension for `vue-storefront-api`:
-
-```shell
-cp -f ./vue-storefront/src/modules/vsf-password-reset/API/password-reset ./vue-storefront-api/src/api/extensions/
 ```
